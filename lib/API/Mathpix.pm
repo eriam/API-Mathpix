@@ -2,10 +2,10 @@ package API::Mathpix;
 
 use Moose;
 use JSON::PP;
-use Data::Dumper;
 use LWP::UserAgent;
 use HTTP::Request;
 use MIME::Base64;
+use Algorithm::LeakyBucket;
 
 use API::Mathpix::Response;
 
@@ -19,9 +19,14 @@ has 'app_key' => (
   isa => 'Str'
 );
 
-has 'ua' => (
+has '_ua' => (
   is  => 'rw',
   isa => 'LWP::UserAgent'
+);
+
+has '_bucket' => (
+  is  => 'rw',
+  isa => 'Algorithm::LeakyBucket'
 );
 
 =head1 NAME
@@ -63,9 +68,16 @@ if you don't export anything, such as for a purely object-oriented module.
 sub BUILD {
   my ($self) = @_;
 
-  $self->ua(
+  $self->_ua(
     LWP::UserAgent->new(
       timeout => 30,
+    )
+  );
+
+  $self->_bucket(
+    Algorithm::LeakyBucket->new(
+      ticks   => 200,
+      seconds => 60
     )
   );
 
@@ -77,6 +89,7 @@ sub BUILD {
 
 sub process {
   my ($self, $opt) = @_;
+
 
   if (-f $opt->{src}) {
 
@@ -101,13 +114,18 @@ sub process {
 
   my $r = HTTP::Request->new('POST', $url, $headers, $encoded_data);
 
-  my $response = $self->ua->request($r);
+  my $response;
+
+  if ($self->_bucket->tick) {
+    $response = $self->_ua->request($r);
+  }
+  else {
+    warn 'Rate limiting !';
+  }
 
   if ($response->is_success) {
       my $data = decode_json($response->decoded_content);
-
       return API::Mathpix::Response->new($data);
-
   }
   else {
       warn $response->status_line;
