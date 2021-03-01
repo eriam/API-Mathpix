@@ -19,7 +19,7 @@ my %WriteMakefileArgs = (
     PREREQ_PM => {
         'Moose'                   => '0.1',
         'JSON::PP'                => '0.1',
-        'Algorithm::LeakyBucket'  => '0.1', 
+        'Algorithm::LeakyBucket'  => '0.08', 
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'API-Mathpix-*' },
