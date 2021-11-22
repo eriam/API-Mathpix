@@ -1,17 +1,12 @@
-# API-Mathpix
+# NAME
 
-A Perl module to use the Mathpix API
+API::Mathpix - Use the API of Mathpix
 
-# Installation
+# VERSION
 
-To install this module, run the following commands:
+Version 0.01
 
-	perl Makefile.PL
-	make
-	make test
-	make install
-
-# Usage
+# SYNOPSIS
 
     my $mathpix = API::Mathpix->new({
       app_id  => $ENV{MATHPIX_APP_ID},
@@ -22,12 +17,31 @@ To install this module, run the following commands:
       src     => 'https://mathpix.com/examples/limit.jpg',
     });
 
-    print $response->text; # your sweet LaTeX is there
+    print $response->text;
 
-# Licence and copyright
+# EXPORT
+
+A list of functions that can be exported.  You can delete this section
+if you don't export anything, such as for a purely object-oriented module.
+
+# SUBROUTINES/METHODS
+
+## process
+
+# AUTHOR
+
+Eriam Schaffter, `<eriam at mediavirtuel.com>`
+
+# BUGS & SUPPORT
+
+Please go directly to Github
+
+    https://github.com/eriam/API-Mathpix
+
+# LICENSE AND COPYRIGHT
 
 This software is Copyright (c) 2021 by Eriam Schaffter.
 
 This is free software, licensed under:
 
-  The Artistic License 2.0 (GPL Compatible)
+    The Artistic License 2.0 (GPL Compatible)
