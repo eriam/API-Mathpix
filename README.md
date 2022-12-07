@@ -19,11 +19,6 @@ Version 0.01
 
     print $response->text;
 
-# EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
 # SUBROUTINES/METHODS
 
 ## process
